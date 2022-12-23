@@ -1,0 +1,27 @@
+#!/bin/bash
+
+echo hello world
+
+killall python
+osascript -e 'tell application "Terminal"' -e 'set mainID to id of front window' -e 'close (every window whose id ≠ mainID)' -e 'end tell'
+
+
+make all
+
+pwd=`pwd`
+serverC="$pwd/serverC"
+serverP="$pwd/serverP"
+serverS="$pwd/serverS"
+serverT="$pwd/serverT"
+clientA="$pwd/clientA"
+clientB="$pwd/clientB"
+
+
+osascript -e "tell application \"Terminal\" to do script \"$serverC\""
+osascript -e "tell application \"Terminal\" to do script \"$serverP\""
+osascript -e "tell application \"Terminal\" to do script \"$serverS\""
+osascript -e "tell application \"Terminal\" to do script \"$serverT\""
+osascript -e "tell application \"Terminal\" to do script \"$clientA Victor\""
+osascript -e "tell application \"Terminal\" to do script \"$clientB Rachit\""
+
+

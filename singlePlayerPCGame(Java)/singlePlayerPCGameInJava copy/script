@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# cd cl
+# javac *.java
+# cd ../
+javac *.java
+java MineSweeper
+
+

@@ -1,0 +1,2 @@
+run ./script
+if permission denied, run "chmod 777 ./script"

@@ -1,0 +1,18 @@
+#!/bin/bash
+
+echo hello world
+# make all
+# echo 'cd /Users/xintong'
+# SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+p=`pwd`
+bat="$p/serverC"
+
+# echo $p
+# cd $bat
+# $bat
+# echo $p
+
+osascript -e "tell application \"Terminal\" to do script \"$bat\""
+
+# echo hello world
+

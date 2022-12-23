@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>HW6</title>
+
+    <link rel="stylesheet" type="text/css" href="static/index.css">
+    <script src="static/index.js"></script>
+</head>
+
+<body onload="init()">
+<!-- <a href="/searchyelp?key=food&lat=34.0223519&long=-118.285117&distance=0&category=all">sample link</a> -->
+    <div id="search-page-div">
+        <div id="form-heading-div">
+            <img id="banner" src='static/banner.jpeg'>
+            <div id="banner-text-div">
+                <div id="title">Business Search</div>
+                <div id="description">Fill out the form to get businesses near you!</div>
+            </div>
+        </div>
+
+        <div id='input-form-div'>
+            <form id="input-form">
+                <table id="input-field-table">
+                    <tr>
+                        <td colspan="2">
+                            <label for="keyword">Keyword</label><span class="asterisk">*</span>
+                            <input type=text name="keyword" id="keyword" required>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td id="distance-td">
+                            <label for="dis">Distance(miles)</label>
+                            <input type=text name="distance" id="dis" placeholder="10">
+                        </td>
+                        <td>
+                            <label for="ca">Category</label><span class="asterisk">*</span>
+                            <select name="categories-select" id="ca">
+                                <option id="default-select">Default</option>
+                                <!-- <option>arts</option> -->
+                                <option>Arts & Entertainment</option>
+                                <option>Health & Medical</option>
+                                <option>Hotels & Travel</option>
+                                <option>Food</option>
+                                <option>Professional Services</option>
+                            </select>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td colspan="2" id="input-location-td" style="padding-bottom:11px">
+                            <label for="loc">Location</label><span class="asterisk">*</span>
+                            <input type=text name="location" id="loc">
+                        </td>
+                    </tr>
+                </table>
+                <div id="hr-div">
+                    <hr style="color:#4f6fad;background-color:#4f6fad;height:1px;border-width: 0px;">
+                </div>
+                <div id='auto-detect-div'>
+                    <label for="auto-detect-check">Want us to auto-detect your location? Check here</label><input
+                        type="checkbox" id="auto-detect-check" onchange="onChangeCheckbox()" value="Want us to auto-detect your location? Check here">
+                </div>
+                <div id="buttons-div">
+                    <!-- <button type=submit id="submit" style="font-family: 'Lato',sans-serif; font-weight: 100;">SUBMIT</button><button type=reset id="clear" style="font-family: 'Lato',sans-serif;font-weight: 100;">CLEAR</button> -->
+                    <input type=submit id="submit" value="SUBMIT" style="font-family: 'Lato',sans-serif; font-weight: 100;"><input type=reset id="clear" value="CLEAR" style="font-family: 'Lato',sans-serif; font-weight: 100;">
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div id="no-record">No record has been found</div>
+
+    <div id="result-page">
+        <table id="result-table" class="result-tables">
+            <tr class="result-table-head">
+                <th class="th1">No.</th>
+                <th class="th2">Image</th>
+                <th class="th3" onclick="click_sorted_by_name()" class="clickable">Business Name
+                </th>
+                <th class="th4" onclick="click_sorted_by_rating()" class="clickable">Rating</th>
+                <th class="th5" onclick="click_sorted_by_distance()" class="clickable">Distance (miles)</th>
+            </tr>
+        </table>
+        <table id="table-sorted-by-name" class="result-tables">
+            <tr class="result-table-head">
+                <th class="th1">No.</th>
+                <th class="th2">Image</th>
+                <th class="th3" onclick="click_sorted_by_name_desc()" class="clickable">Business Name</th>
+                <th class="th4" onclick="click_sorted_by_rating()" class="clickable">Rating</th>
+
+                <th class="th5" onclick="click_sorted_by_distance()" class="clickable">Distance (miles)</th>
+
+            </tr>
+        </table>
+        <table id="table-sorted-by-rating" class="result-tables">
+            <tr class="result-table-head">
+                <th class="th1">No.</th>
+                <th class="th2">Image</th>
+                <th class="th3" onclick="click_sorted_by_name()" class="clickable">Business Name
+                </th>
+                <th class="th4" onclick="click_sorted_by_rating_desc()" class="clickable">Rating</th>
+                <th class="th5" onclick="click_sorted_by_distance()" class="clickable">Distance (miles)</th>
+
+            </tr>
+        </table>
+        <table id="table-sorted-by-distance" class="result-tables">
+            <tr class="result-table-head">
+                <th class="th1">No.</th>
+                <th class="th2">Image</th>
+                <th class="th3" onclick="click_sorted_by_name()" class="clickable">Business Name
+                </th>
+                <th class="th4" onclick="click_sorted_by_rating()" class="clickable">Rating</th>
+                <th class="th5" onclick="click_sorted_by_distance_desc()" class="clickable">Distance (miles)</th>
+            </tr>
+        </table>
+        <table id="table-sorted-by-name-desc" class="result-tables">
+            <tr class="result-table-head">
+                <th class="th1">No.</th>
+                <th class="th2">Image</th>
+                <th class="th3" onclick="click_sorted_by_name()" class="clickable">Business Name
+                </th>
+                <th class="th4" onclick="click_sorted_by_rating()" class="clickable">Rating</th>
+                <th class="th5" onclick="click_sorted_by_distance()" class="clickable">Distance (miles)</th>
+
+            </tr>
+        </table>
+        <table id="table-sorted-by-rating-desc" class="result-tables">
+            <tr class="result-table-head">
+                <th class="th1">No.</th>
+                <th class="th2">Image</th>
+                <th class="th3" onclick="click_sorted_by_name()" class="clickable">Business Name
+                </th>
+                <th class="th4" onclick="click_sorted_by_rating()" class="clickable">Rating</th>
+                <th class="th5" onclick="click_sorted_by_distance()" class="clickable">Distance (miles)</th>
+
+            </tr>
+        </table>
+        <table id="table-sorted-by-distance-desc" class="result-tables">
+            <tr class="result-table-head">
+                <th class="th1">No.</th>
+                <th class="th2">Image</th>
+                <th class="th3" onclick="click_sorted_by_name()" class="clickable">Business Name
+                </th>
+                <th class="th4" onclick="click_sorted_by_rating()" class="clickable">Rating</th>
+                <th class="th5" onclick="click_sorted_by_distance()" class="clickable">Distance (miles)</th>
+
+            </tr>
+        </table>
+    </div>
+
+    <div id="detail-page">
+        <div id="business-name"></div>
+        <div>
+            <hr style="color:#4f6fad;background-color: #D1CECE;height:1.2px;border-width: 0px;">
+        </div>
+    </div>
+
+    <script src="static/script.js"></script>
+</body>
+
+</html>
