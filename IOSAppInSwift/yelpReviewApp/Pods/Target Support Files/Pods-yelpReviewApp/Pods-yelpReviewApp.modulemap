@@ -1,0 +1,6 @@
+framework module Pods_yelpReviewApp {
+  umbrella header "Pods-yelpReviewApp-umbrella.h"
+
+  export *
+  module * { export * }
+}
