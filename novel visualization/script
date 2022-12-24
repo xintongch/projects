@@ -18,5 +18,6 @@ npm i --save-dev @types/jquery
 npm install d3 && npm install @types/d3 --save-dev
 npm install file-saver --save
 npm install --save csvtojson@latest
+npm i @nivo/parallel-coordinates
 npx nodemon
 

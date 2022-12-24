@@ -8,16 +8,15 @@
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
 
 
-    <link rel="stylesheet" type="text/css" href="index.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/parcoords/0.7.0/d3.parcoords.css" integrity="sha512-OeBTvMoqdXRw9TnwP814CMMTw4dBFZqjruVHODnpth92WRFdg7X1wYV4dwf3kSNjebTzFdhKo2F2I9XtIGEGKg==" crossorigin="anonymous" referrerpolicy="no-referrer">
+  <link rel="stylesheet" type="text/css" href="index.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/parcoords/0.7.0/d3.parcoords.css" integrity="sha512-OeBTvMoqdXRw9TnwP814CMMTw4dBFZqjruVHODnpth92WRFdg7X1wYV4dwf3kSNjebTzFdhKo2F2I9XtIGEGKg==" crossorigin="anonymous" referrerpolicy="no-referrer">
 
 
 
-    <!-- <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
-  
-    <link type="text/css" rel="stylesheet" href="dist/angular-parallel-coordinates.css" />
-    <script src="assets/angular-parallel-coordinates.js"></script> -->
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="dist/angular-parallel-coordinates.css">
+  <script src="dist/angular-parallel-coordinates.js"></script>
 
 
 
@@ -25,15 +24,54 @@
 <style>body{background-image:url(pexels-miguel-255379.ef735222e49fede6.jpg)}</style><link rel="stylesheet" href="styles.dff1822accf53c77.css" media="print" onload="this.media='all'"><noscript><link rel="stylesheet" href="styles.dff1822accf53c77.css"></noscript></head>
 
 <body>
+
   <!-- <body ng-app="example" ng-controller="example"> -->
+
+  <script src="http://d3js.org/d3.v3.min.js" charset="utf-8"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.16/angular.min.js"></script>
+  <link type="text/css" rel="stylesheet" href="dist/angular-parallel-coordinates.css">
+  <script src="dist/angular-parallel-coordinates.js"></script>
+
+
 
   <app-root></app-root>
 
+  <!-- 
+  <parallel-coordinates-chart
+	width="{{width}}"
+	height="{{height}}"
+	highlight="{{highlight}}"
+	filters="dimensions"
+	data="data" 
+	config="config" 
+/> -->
+
+
+  <!-- <script>
+  angular.module('example', ['parallelCoordinatesChart'])
+    .controller('example', function($scope, $http, $interval, $window){
+      $scope.width = $window.innerWidth;
+      $scope.height = $window.innerHeight;
+      // $scope.data=
+      
+      // $http.get('/data.json').then(function(response){
+      //   $scope.data = response.data;
+        
+      //   // Get the keys for the dimensions of the data
+      //   $scope.dimensions = Object.keys($scope.data[0]);
+
+      //   // Change the highlighted dimension every 3 seconds
+      //   $interval(function(){
+      //     $scope.highlight = dimensions[(Math.random() * $scope.dimensions.length - 1)|0];
+      //   }, 3000);
+      // });
+    });
+</script> -->
 
 
 
 
-    <!-- <parallel-coordinates-chart
+  <!-- <parallel-coordinates-chart
       width="{{width}}"
       height="{{height}}"
       highlight="chart.highlight"
@@ -44,7 +82,7 @@
     {{chart.highlight}}
     {{chart.filters}}
     </div> -->
-    <!-- <script>
+  <!-- <script>
     angular.module('example', ['parallelCoordinatesChart'])
       .controller('example', function($scope, $http, $interval){
         $scope.width = 1560;
@@ -79,11 +117,11 @@
   <!-- </body> -->
 
 
-  
+
 
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
-<script src="runtime.1eef65174679b3b8.js" type="module"></script><script src="polyfills.1a4a779d95e3f377.js" type="module"></script><script src="main.bbd4ac8f7da4c4ff.js" type="module"></script>
+<script src="runtime.1eef65174679b3b8.js" type="module"></script><script src="polyfills.1a4a779d95e3f377.js" type="module"></script><script src="main.5b95ddb137e9d991.js" type="module"></script>
 
 </body></html>

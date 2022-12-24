@@ -1,4 +1,3 @@
-
 import codecs
 import jieba
 import jieba.analyse
@@ -12,6 +11,7 @@ from snownlp import SnowNLP
 import numpy as np
 import csv
 import time
+import json
 
 
 class NovelTextProcessor:
@@ -134,48 +134,50 @@ class NovelTextProcessor:
         leadc_lines=self.leadCharacterLines
 #         print("length of leadc_lines=",len(leadc_lines))     #打印出有主角在内的总章节数目
         allNames=self.names
-        leadC=allNames[0]                                            #leadc保存主角名字
-        leadc_sentiments=[[]for i in range(len(allNames))]           #创建一个二维数组，每一维装一个其他角色和主角的情感数值变化
-        leadc_sentiments[0].append(('names',leadC))
-        del allNames[0]                                               #再把主角名字删掉，留下其他角色名字在数组里 并在下面命名为others
-        otherNames=allNames
-        for i in range(0,len(leadc_lines)):
-            leadc_sentiments[0].append(('第'+str(i+1)+'章',1))
-        for i in range(len(otherNames)):
-            leadc_sentiments[i+1].append(('names',otherNames[i]))
-        temNames=[]
-        for i in range(len(leadc_lines)):                           #从第一章开始循环
-            if i==0:
-                temSentiFinal=[0.5 for i in range(len(otherNames))]             #对于第i章，创建一个数组，长度为其他角色数目，默认值为0.5（不开心也不生气）
-            temSenti=[0 for i in range(len(otherNames))]                    #暂时的情感值是0，之后再一句一句加起来
-            temTimes=[0 for i in range(len(otherNames))]
-            for line in leadc_lines[i]:
-                n=0                                                               #一句话里出现其他角色和主角的数目，一开始是0
-                for name in otherNames:                                         #对于每一个line，遍历所有的其他角色名，看看有谁在里面
-                    if name in line:                  
-                        n+=1                                                   #出现其他角色的句子的数目加一
-                        nn=otherNames.index(name)                          #获取出现的角色名字的指标，赋值给nn
-                if n==1:                                                       #如果n==1说明只有一个其他角色和主角在句子里   如果n不是1而是0或2等等，就不分析该句子
-                    temNames.append(otherNames[nn])                     #把该角色放到tem名字数组里
-                    temSenti[nn]+=SnowNLP(line).sentiments    #用情感分析得方法得到情感值然后赋值给暂时的情感数值数组里，该数组后面将积累数值并平均
-                    temTimes[nn]+=1                                            #该角色的出现次数加一
-            for k in range(len(otherNames)):                                
-                if temTimes[k]!=0:                                              #遍历其他角色的指标，如果在次数数组里该角色指标的值不为0，说明在该章节里，该角色出现了并被分析得情感值
-                    temSentiFinal[k]=temSenti[k]/temTimes[k]                 #numbers数组里的默认值是0.5，但是可以重新赋值为新的情感值
-                leadc_sentiments[k+1].append(('第'+str(i+1)+'章',temSentiFinal[k]))         #leadc——sentiment数组是二维数组，给对应的其他角色的一维数组里添加numbers的值，不论0.5还是新值，作为第i章的情感值，然后进行下一个循环，分析下一个章节
-        self.leadCharacterSenti=leadc_sentiments
+        if(len(allNames)>1):
+            leadC=allNames[0]                                            #leadc保存主角名字
+            leadc_sentiments=[{}for i in range(len(allNames))]           #创建一个二维数组，每一维装一个其他角色和主角的情感数值变化
+            leadc_sentiments[0]['names']=leadC
+            del allNames[0]                                               #再把主角名字删掉，留下其他角色名字在数组里 并在下面命名为others
+            otherNames=allNames
+            for i in range(0,len(leadc_lines)):
+                # leadc_sentiments[0].append(('第'+str(i+1)+'章',1))
+                leadc_sentiments[0]['第'+str(i+1)+'章']=1
+            for i in range(len(otherNames)):
+                leadc_sentiments[i+1]['names']=otherNames[i]
+            temNames=[]
+            for i in range(len(leadc_lines)):                           #从第一章开始循环
+                if i==0:
+                    temSentiFinal=[0.5 for i in range(len(otherNames))]             #对于第i章，创建一个数组，长度为其他角色数目，默认值为0.5（不开心也不生气）
+                temSenti=[0 for i in range(len(otherNames))]                    #暂时的情感值是0，之后再一句一句加起来
+                temTimes=[0 for i in range(len(otherNames))]
+                for line in leadc_lines[i]:
+                    n=0                                                               #一句话里出现其他角色和主角的数目，一开始是0
+                    for name in otherNames:                                         #对于每一个line，遍历所有的其他角色名，看看有谁在里面
+                        if name in line:                  
+                            n+=1                                                   #出现其他角色的句子的数目加一
+                            nn=otherNames.index(name)                          #获取出现的角色名字的指标，赋值给nn
+                    if n==1:                                                       #如果n==1说明只有一个其他角色和主角在句子里   如果n不是1而是0或2等等，就不分析该句子
+                        temNames.append(otherNames[nn])                     #把该角色放到tem名字数组里
+                        temSenti[nn]+=SnowNLP(line).sentiments    #用情感分析得方法得到情感值然后赋值给暂时的情感数值数组里，该数组后面将积累数值并平均
+                        temTimes[nn]+=1                                            #该角色的出现次数加一
+                for k in range(len(otherNames)):                                
+                    if temTimes[k]!=0:                                              #遍历其他角色的指标，如果在次数数组里该角色指标的值不为0，说明在该章节里，该角色出现了并被分析得情感值
+                        temSentiFinal[k]=temSenti[k]/temTimes[k]                 #numbers数组里的默认值是0.5，但是可以重新赋值为新的情感值
+                    leadc_sentiments[k+1]['第'+str(i+1)+'章']=temSentiFinal[k]        #leadc——sentiment数组是二维数组，给对应的其他角色的一维数组里添加numbers的值，不论0.5还是新值，作为第i章的情感值，然后进行下一个循环，分析下一个章节
+            self.leadCharacterSenti=leadc_sentiments
     
 
 
 def bottomLine(mySentiments):
     m=len(mySentiments)
     # print("m======================",m)
-    mySentiments.append([])
-    mySentiments[m].append(('names','n'))
+    mySentiments.append({})
+    mySentiments[m]['names']='n'
     for i in range(0,len(mySentiments[0])-1):
 #         print(0,len(mySentiments[0])-1)
 #         print(i)
-        mySentiments[m].append(('第'+str(i+1)+'章',0))
+        mySentiments[m]['第'+str(i+1)+'章']=0
 
 
 
@@ -183,8 +185,8 @@ def bottomLine(mySentiments):
 
 def main():
     # print("Test main function")
-    # filename='xiangmi.txt'
-    filename='temp.txt'
+    filename='xiangmi.txt'
+    # filename='temp.txt'
     xingshiFilename='baijiaxing.txt'
     stopwordFilename='stopwords.txt'
     stopword_text=codecs.open(stopwordFilename).read()
@@ -216,38 +218,44 @@ def main():
             break
         else:
             tem=mySentiments[i-2]
-            tup=[]
+            # print('tem=',tem)
+            tup={}
             nn=0
             for j in tem:
                 nn+=1
                 if(nn==1):
-                    tup.append(j)
+                    tup['name']=j+''
                 else:
-                    tup.append((j[0],2-j[1]))
+                    # print("type of j[1]=",type(j[1]))
+                    tup[j[0]]=2-int(j[1])
+                    # tup.append((j[0],2-j[1]))
             del mySentiments[i-2]
             mySentiments.append(tup)
 
 
+
     m=len(mySentiments)
-    mySentiments.append([])
-    mySentiments[m].append(('names','m'))
+    mySentiments.append({})
+    mySentiments[m]['names']='m'
     for i in range(0,len(mySentiments[0])-1):
     #         print(0,len(mySentiments[0])-1)
     #         print(i)
-        mySentiments[m].append(('第'+str(i+1)+'章',2))
-        
-        
-        
+        mySentiments[m]['第'+str(i+1)+'章']=2
+    print("|")
+    print(mySentiments)
+    # jsonObj=json.dumps(mySentiments)
+    # with open(os.getcwd()+"/frontend/dist/frontend/temp.json","w") as f:
+    #     f.write(jsonObj)
 
     # 写入数据
-    head=list(dict(mySentiments[0]))
-    with open(os.getcwd()+"/frontend/dist/frontend/temp.csv","w") as f:
-        filenames=head
-        writer=csv.DictWriter(f,fieldnames=filenames)
-        writer.writeheader()
-        for i in range(len(mySentiments)):
-            writer.writerow(dict(mySentiments[i]))
-        f.close()
+    # head=list(dict(mySentiments[0]))
+    # with open(os.getcwd()+"/frontend/dist/frontend/temp.csv","w") as f:
+    #     filenames=head
+    #     writer=csv.DictWriter(f,fieldnames=filenames)
+    #     writer.writeheader()
+    #     for i in range(len(mySentiments)):
+    #         writer.writerow(dict(mySentiments[i]))
+    #     f.close()
 
 
 

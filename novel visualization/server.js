@@ -19,13 +19,25 @@ app.listen(PORT, () => {
 //    });
 
 app.post('/process',jsonParser,(req,res)=>{
-    if (fs.existsSync(process.cwd()+"/frontend/dist/frontend/wordcloud.jpg")) {
-        console.log("file exist")
-    fs.unlinkSync(process.cwd()+"/frontend/dist/frontend/wordcloud.jpg",function(err){
-        if(err) return console.log(err);
-        console.log('file deleted successfully');
-   });
-}
+//     if (fs.existsSync(process.cwd()+"/frontend/dist/frontend/wordcloud.jpg")) {
+//         console.log("file exist")
+//     fs.unlinkSync(process.cwd()+"/frontend/dist/frontend/wordcloud.jpg",function(err){
+//         if(err) return console.log(err);
+//         console.log('file deleted successfully');
+//    });
+// }
+
+    var files = fs.readdirSync(process.cwd()+"/frontend/dist/frontend/").filter(fn => fn.startsWith('wordcloud'));
+    console.log("files=",files)
+    if(files.length>0){
+        files.forEach((file)=>{
+                fs.unlinkSync(process.cwd()+"/frontend/dist/frontend/"+file,function(err){
+                if(err) return console.log(err);
+                console.log('file deleted successfully');
+            });
+        }
+        )
+    }
 
 
     console.log("server post process")
@@ -52,6 +64,8 @@ app.post('/process',jsonParser,(req,res)=>{
 
     pyProg.stdout.on('data', function(data) {
         console.log(data.toString());
+        var d=data.toString().split('|')
+        console.log('d[0]',d[0])
         // res.write({'data':data});
         // res.end('end');
         // res.status(200).send({'data':data.toString()})
@@ -60,24 +74,25 @@ app.post('/process',jsonParser,(req,res)=>{
         // .fromFile("temp.csv")
         // .then(function(jsonArrayObj){ //when parse finished, result will be emitted here.
         //     console.log("turn into json",jsonArrayObj); 
-            // fs.writeFile(process.cwd()+"/frontend/dist/frontend/temp.json",jsonArrayObj,{
-            //     encoding: "utf8",
-            //     flag: "w",
-            //     mode: 0o666
-            //   },
-            //   (err) => {
-            //     if (err)
-            //       console.log(err);
-            //     else {
-            //       console.log("File written successfully\n");
-            //     //   console.log("The written has the following contents:");
-            //     //   console.log(fs.readFileSync("movies.txt", "utf8"));
-            //     }
-            // })
-            // res.send(jsonArrayObj)
-        // })
+        //     fs.writeFile(process.cwd()+"/frontend/dist/frontend/temp.json",jsonArrayObj,{
+        //         encoding: "utf8",
+        //         flag: "w",
+        //         mode: 0o666
+        //       },
+        //       (err) => {
+        //         if (err)
+        //           console.log(err);
+        //         else {
+        //           console.log("File written successfully\n");
+        //         //   console.log("The written has the following contents:");
+        //         //   console.log(fs.readFileSync("movies.txt", "utf8"));
+        //         }
+        //     })
 
-        res.status(200).send({'filename':data.toString()})
+        //     // res.status(200).send({'filename':data.toString()})
+        // })
+        // res.status(200).send({'filename':data.toString(),'date':})
+        res.status(200).send(JSON.stringify({'filename':d[0],'data':d[1]}))
 
         
     });
@@ -85,14 +100,26 @@ app.post('/process',jsonParser,(req,res)=>{
 })
 
 app.use(express.static(process.cwd()+"/frontend/dist/frontend/"));
+
 app.get('/*',(req,res)=>{
     console.log("test...")
-    if (fs.existsSync(process.cwd()+"/frontend/dist/frontend/wordcloud.jpg")) {
-    fs.unlinkSync(process.cwd()+"/frontend/dist/frontend/wordcloud.jpg",function(err){
-        if(err) return console.log(err);
-        console.log('file deleted successfully');
-   });
-}
+    var files = fs.readdirSync(process.cwd()+"/frontend/dist/frontend/").filter(fn => fn.startsWith('wordcloud'));
+    console.log("files=",files)
+    if(files.length>0){
+        files.forEach((file)=>{
+                fs.unlinkSync(process.cwd()+"/frontend/dist/frontend/"+file,function(err){
+                if(err) return console.log(err);
+                console.log('file deleted successfully');
+            });
+        }
+        )
+    }
+    // if (fs.existsSync(process.cwd()+"/frontend/dist/frontend/wordcloud*.jpg")) {
+    //     fs.unlinkSync(process.cwd()+"/frontend/dist/frontend/wordcloud*.jpg",function(err){
+    //         if(err) return console.log(err);
+    //         console.log('file deleted successfully');
+    //     });
+    // }
     res.sendFile(process.cwd()+"/frontend/dist/frontend/index.html")
 })
 
