@@ -1,0 +1,22 @@
+#!/bin/bash
+
+
+#if no npm, please install node.js on https://nodejs.org/en/
+npm install -g @angular/cli
+
+ng new frontend
+cd frontend
+
+ng generate component components/header
+
+# ng build
+ng serve
+
+npm init
+npm install express
+npm i --save-dev @types/jquery
+npm install d3 && npm install @types/d3 --save-dev
+npm install file-saver --save
+npm install --save csvtojson@latest
+npx nodemon
+
