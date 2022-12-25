@@ -1,0 +1,27 @@
+.pointer-cursor{
+    cursor: pointer;
+}
+
+body{
+    background-image: url('assets/pexels-miguel-255379.jpg');
+    /* overflow-y:scroll ; */
+}
+
+#pic_title{
+    margin-top: 50px;
+}
+.pic{
+    height: 800px;
+    margin-bottom: 50px;
+}
+
+#im{
+    overflow: hidden;
+    width: 600px;
+    height: 300px;
+    margin-bottom: 100px;
+}
+
+/* #wc_title{
+
+} */
