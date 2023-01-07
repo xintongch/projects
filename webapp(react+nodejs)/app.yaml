@@ -1,0 +1,14 @@
+runtime: nodejs16
+handlers:
+  # Serve all static files with url ending with a file extension
+- url: /(.*\..+)$
+  static_files: frontend/build/\1
+  upload: frontend/build/(.*\..+)$
+  # static_files: frontend/public/\1
+  # upload: frontend/public/(.*\..+)$
+  # Catch all handler to index.html
+- url: /
+  static_files: frontend/build/index.html
+  upload: frontend/build/index.html
+  # static_files: frontend/public/index.html
+  # upload: frontend/public/index.html
