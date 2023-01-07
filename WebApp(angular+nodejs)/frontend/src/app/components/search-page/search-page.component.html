@@ -1,0 +1,366 @@
+<div class=" clear-both container-fluid text-center">
+
+  <div class="mt-103 text-center">
+    <div
+      class="mb-5 text-center bg-white mx-auto px-md-5 px-sm-0 pt-md-5 pt-3 pb-2 pb-md-4 rounded-4 border-lightgray col-12 col-md-6">
+      <form id="search-form">
+        <div class="text-center mb-1" style="font-size: 21px;font-weight: 410;">
+          Bussiness search
+        </div>
+        <div class="row">
+          <div class="col mt-3 text-left">
+            <label for="keyword">Keyword</label><span class="mx-1 text-danger">*</span>
+            <input #autoCompleteInput class="form-input fs-19 pl-3 w-100 h-input border rounded-input"
+              id="keyword" name="keyword" matInput [(ngModel)]="selectedMovie" [formControl]="searchMoviesCtrl"
+              [matAutocomplete]="autoComplete" required>
+
+            <mat-autocomplete #autoComplete="matAutocomplete" (optionSelected)="onSelected()"
+              [displayWith]="displayWith" cdkScrollable>
+              <mat-option *ngIf="isLoading" class="is-loading"></mat-option>
+              <ng-container *ngIf="!isLoading">
+                <mat-option *ngFor="let movie of filteredMovies" [value]="movie">
+                  <span><b>{{movie.Title}}</b></span>
+                </mat-option>
+              </ng-container>
+            </mat-autocomplete>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-sm-6 text-left mt-0 pr-2">
+            <label for="distance">Distance</label>
+            <input class="pl-3 fs-19 w-100 h-input border rounded-input" type="text" name="distance"
+              id="distance" placeholder="10">
+          </div>
+          <div class="col-sm-6 text-left mt-0" style="padding-right: 66px;">
+            <label for="category">Category</label><span class="mx-1 text-danger">*</span>
+            <select name="category" id="category" class="w-100 fs-19 h-input border pl-3 rounded-input"
+              required>
+              <option value="all" selected>Default</option>
+              <option value="arts">Arts & Entertainment</option>
+              <option value="health">Health & Medical</option>
+              <option value="hotelstravel">Hotels & Travel</option>
+              <option value="food">Food</option>
+              <option value="professional">Professional Services</option>
+            </select>
+          </div>
+        </div>
+        <div class="row mt-1 mt-md-2">
+          <div class="col text-left">
+            <label for="location">Location</label><span class="mx-1 text-danger">*</span>
+            <input class="pl-3 fs-19 w-100 h-input border rounded-input" type="text" name="location"
+              id="location" required>
+          </div>
+        </div>
+        <div class="row mt-0">
+          <div class="col text-left">
+            <input class="mr-2" type="checkbox" id="auto-detect" (change)="autoDetectOnChange()" name="auto-detect">
+            <label for="auto-detect"> Auto-detect my location</label>
+          </div>
+        </div>
+        <div class="row mt-2 pb-2">
+          <div class="col text-right pr-2">
+            <button type="submit"
+              class="mr-3 hover-pointer border-0 rounded-input hover-lightout w-submit h-button button-text-size text-white"
+              style="background-color: #cd4c54;">Submit</button>
+          </div>
+          <div class="col text-left w-100 pl-0">
+            <button type="reset"
+              class="hover-lightout border-0 rounded-input hover-pointer w-clear h-button button-text-size text-white"
+              (click)="clickClear()" style="background-color:#3875f5;">Clear</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+    <div class="mx-auto rounded-4 text-danger bg-white col-sm-11 col-md-3 h5" id="no-result">
+      No results available
+    </div>
+    <div class="container col-md-10 col-sm-12 pl-sm-2 px-0 mt-4" id="rt-container">
+      <table class="table-wo-bottom bg-white rounded-4 mb-4">
+        <tr class="border-bottom aligh-top" id="rt-head">
+          <th scope="col" class="text-left lp pb-2 pt-2 rt-h1" style="width: 8%;">#</th>
+          <th scope="col" class="rt-h2 py-lg-auto pb-2 pt-2" style="width:15.7%">Image</th>
+          <th scope="col" class="rt-h3 py-lg-auto pb-2 pt-2" style="width: 44%;">Business Name</th>
+          <th scope="col" class="rt-h4 py-lg-auto pb-2 pt-2" style="width: 7.5%;">Rating</th>
+          <th scope="col" class="pb-2 py-lg-auto pt-2">Distance (miles)</th>
+        </tr>
+        <tbody>
+
+        </tbody>
+      </table>
+    </div>
+
+
+
+    <div class="mx-auto w-dc bg-white rounded-4 px-0 my-14 mt-0 mb-5" id="dc-container">
+      <div class="text-left pl-3 mt-mb-3 mt-4">
+        <img src="assets/left_arrow.png" class="hover-pointer" alt="return" (click)="return_from_detail_card()"
+          style="width: 15px; height: 12px;">
+      </div>
+
+      <div class="mt-lg-1 mt-0" id="businessNameOnDetailCard" style="font-size: 28px;"></div>
+
+
+
+
+
+
+
+
+      <div class="d-flex bg-controlers w-100 px-0 mt-2" id="detailCardNavigationCarousel">
+        <input type="radio" name="detailCardNavigationCarouselbtn-radio" id="detailCardNavigationCarouselbtn-radio1"
+          hidden checked>
+        <input type="radio" name="detailCardNavigationCarouselbtn-radio" id="detailCardNavigationCarouselbtn-radio2"
+          hidden>
+        <div class="prev-btn bg-controlers col-1 d-sm-none d-flex align-items-center justify-content-center detailCardNavigationCarouselbtn" id=""
+          (click)="slideBack()"><img src="assets/prev7.png" alt="" style="width: 7px;height: 11px;">
+        </div>
+    
+        <div class="d-flex col-10 col-md-12 w-100 px-0 overflow-hidden" id="slide-controller-container">
+          <div class="bg-controlers" id="slide-controllers" style="position: relative;">
+            <input type="radio" name="detailCardNCradio" id="detailCardNCradio1" checked hidden>
+            <input type="radio" name="detailCardNCradio" id="detailCardNCradio2" hidden>
+
+            <input type="radio" name="slide-controllers-slide-radio" id="slide-controllers-slide-radio1" hidden checked>
+            <input type="radio" name="slide-controllers-slide-radio" id="slide-controllers-slide-radio2" hidden>
+            <input type="radio" name="slide-controllers-slide-radio" id="slide-controllers-slide-radio3" hidden>
+            <div class="btn-anim first text-center">
+              <button class="first-slide-controller dc-car-btn bg-controlers border-0 col-md-12 mx-0 fs-14 h-100"
+                data-target="#detailCardCarouselIndicators" data-slide-to="0" (click)="click_slide_controllers_slide(1)"
+                id="click_slide_controllers_slide1" style="font-size:14px">Business
+                details
+              </button>
+            </div>
+            <div class="btn-anim second text-center">
+              <button class="bg-controlers dc-car-btn border-0 col-md-12 mx-0 fs-14 h-100"
+                data-target="#detailCardCarouselIndicators" data-slide-to="1" (click)="click_slide_controllers_slide(2)"
+                id="click_slide_controllers_slide2" style="font-size:14px">Map location
+              </button>
+            </div>
+            <div class="btn-anim third text-center">
+              <button class="bg-controlers dc-car-btn border-0 col-md-12 mx-0 fs-14 h-100"
+                data-target="#detailCardCarouselIndicators" data-slide-to="2" (click)="click_slide_controllers_slide(3)"
+                id="click_slide_controllers_slide3" style="font-size:14px">Reviews
+              </button>
+            </div>
+            <div id="bottom-line"></div>
+          </div>
+        </div>
+        <div class="next-btn bg-controlers col-1 d-flex align-items-center d-sm-none justify-content-center detailCardNavigationCarouselbtn" id=""
+          (click)="slideForward()"><img src="assets/next5.png" alt="" style="width: 7px;height: 11px;"></div>
+      </div>
+
+
+
+
+      <div id="detailCardCarouselIndicators" class="carousel slide" data-ride="carousel" data-interval="false">
+        <div class="carousel-inner">
+          <div class="carousel-item active w-100">
+            <div class="d-block w-100">
+              <div class="px-3" id="slide1-container">
+              </div>
+
+              <div class="mb-1" id="myModal">
+                <button type="button" class="text-white hover-lightout rounded-3 px-3 py-2 border-0 rn-btn" data-toggle="modal"
+                  data-target="#exampleModal" (click)="clickReserveNow()" id="" style="background-color: #d04c51;border-bottom: darkred 0.8px solid;">
+                  Reserve Now
+                </button>
+                <button type="button" class="rounded-3 text-white py-2 border-0 cr-btn" id="" (click)="clickCancelReservationButton()">
+                  Cancel reservation
+                </button>
+              </div>
+
+              <div class="text-center mt-4">Share on: &nbsp;&nbsp;<a class="twitter-link" target="_blank"><img
+                    class="align-baseline" src="assets/twitterLogo.png" alt="twitter logo"
+                    style="width: 28px; height: 25px;"></a>&nbsp;&nbsp;<a class="facebook-link" target="_blank"><img
+                    src="assets/facebookLogo.png" alt="facebook logo" class="align-baseline"
+                    style="width: 28px; height: 25px;"></a>
+              </div>
+
+
+
+              <div class="position-relative d-flex align-items-center w-100 mt-3" id="businessImagesCarousel">
+                <button class="position-absolute hover-pointer bg-transparent focus-opacity border-0 position-left"
+                  id="">
+                  <img class="" src="assets/prev2.png" alt="last photo" (click)="prev()"
+                    style="width: 15px; height: 29px;">
+                </button>
+                <div class="w-100" style="height: 300px;" id="">
+                  <div class="d-flex w-500" style="height: 300px;">
+                    <input type="radio" name="businessImagesCarousel-radios" id="businessImagesCarousel-radio1" hidden>
+                    <input type="radio" name="businessImagesCarousel-radios" id="businessImagesCarousel-radio2" hidden>
+                    <input type="radio" name="businessImagesCarousel-radios" id="businessImagesCarousel-radio3" hidden>
+
+                    <div class="w-20 first transition">
+                      <img class="dim-bPho" src="assets/cat.jpg" alt="first business image" id="businessimage1">
+                    </div>
+                    <div class="w-20 transition">
+                      <img class="dim-bPho" src="assets/city.jpg" alt="second business image" id="businessimage2">
+                    </div>
+                    <div class="w-20 transition">
+                      <img class="dim-bPho" src="assets/yelp.jpg" alt="third business image" id="businessimage3">
+                    </div>
+                  </div>
+                </div>
+                <button class="position-absolute hover-pointer bg-transparent border-0 focus-opacity position-right"
+                  id="">
+                  <img class="" src="assets/next2.png" alt="next photo" (click)="next()"
+                    style="width: 15px; height: 29px;">
+                </button>
+              </div>
+
+              <div class="bottom w-100 py-2" id="no-business-photo"></div>
+            </div>
+          </div>
+
+
+          <div class="carousel-item w-100">
+            <div class="d-block w-100">
+              <div id="slide2-container">
+                <div class="w-100 h-100" style="margin-top: 22px;margin-bottom: 22px;" id="my-google-map">
+                  <google-map [width]="width" [height]="height" [zoom]="zoom" [center]="center">
+                    <map-marker [position]="marker.position"></map-marker>
+                  </google-map>
+                </div>
+                <div class="no-map"></div>
+              </div>
+
+
+            </div>
+          </div>
+
+
+          <div class="carousel-item w-100">
+            <div class="d-block w-100">
+              <div class="w-100" id="slide3-container">
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
+
+
+
+
+
+
+
+
+    </div>
+
+
+
+
+
+    <div class="myModal-container">
+      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+        aria-hidden="true">
+        <div class="modal-dialog container" role="document">
+          <div class="modal-content rounded-3">
+            <div class="modal-header" style="padding-bottom: 14px;">
+              <h5 class="mt-1" id="exampleModalLabel">Reservation form</h5>
+            </div>
+            <div class="modal-body pl-3">
+              <div id="businessNameOnReservationForm" class="font-weight-normal" style="font-size:20.2px"></div>
+              <form [formGroup]="reservationForm" #formDirective="ngForm"
+                (ngSubmit)="submitReservationForm(reservationForm,formDirective)" id="reservation-form" style="margin-top: 2.5px;">
+
+                <div class="row">
+                  <div class="col text-left pb-0 mb-0">
+                    <label for="email" class="mb-0">Email</label>
+                    <div class="input-group">
+                      <input formControlName="Email" class="form-control w-100"
+                        [ngClass]="{'is-invalid':submitted && reservationForm.controls.Email.errors}" type="email"
+                        name="email" id="email" style="border-radius:0.25rem;">
+                        <div *ngIf="submitted && reservationForm.controls.Email.errors?.required" class="invalid-feedback">
+                          Email is required
+                        </div>
+                        <div *ngIf="submitted && reservationForm.controls.Email.errors?.email" class="invalid-feedback">
+                          Email must be a valid email address
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col text-left pb-0 mb-0">
+                    <label for="date" class="mb-0">Date</label>
+                    <div class="input-group">
+                      <input formControlName="Date" class="form-control w-100"
+                        [ngClass]="{'is-invalid':submitted && reservationForm.controls.Date.errors}" type="date"
+                        name="date" id="date" style="border-radius:0.25rem;" min="9/10/2018" />
+                        <div *ngIf="submitted && reservationForm.controls.Date.errors?.required" class="invalid-feedback">
+                          Date is required
+                        </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col text-left pb-0 mb-0">
+                    <label for="time" class="mb-0">Time</label>
+                    <div class="input-group">
+                      <div class="d-inline-block se ml-0 px-0" style="margin-right: 10px;">
+                        <select formControlName="Hour" class="form-control rounded-3 w-100 select-wo-ap"
+                          [ngClass]="{'is-invalid':submitted && reservationForm.controls.Hour.errors}" id="hour"
+                          name="time" style="height: 37px;">
+                          <option disabled selected value></option>
+                          <option value="10">10</option>
+                          <option value="11">11</option>
+                          <option value="12">12</option>
+                          <option value="13">13</option>
+                          <option value="14">14</option>
+                          <option value="15">15</option>
+                          <option value="16">16</option>
+                          <option value="17">17</option>
+                        </select>
+                      </div>
+                      <div class="pt-2 d-inline-block">
+                        :
+                      </div>
+                      <div class="d-inline-block se ml-1 px-0">
+                        <select formControlName="Minute" class="form-control rounded-3 w-100 select-wo-ap"
+                          [ngClass]="{'is-invalid':submitted && reservationForm.controls.Minute.errors}" id="minute"
+                          name="time" style="height: 37px;">
+                          <option disabled selected value></option>
+                          <option value="0">00</option>
+                          <option value="15">15</option>
+                          <option value="30">30</option>
+                          <option value="45">45</option>
+                        </select>
+                      </div>
+                      <div class="ml-2 d-flex" style="padding-top: 11px;">
+                        <img class="ml-1" src="assets/clock.png" alt="" class="" style="width:20px;height:20px">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col text-center pb-0 mt-3">
+                    <button class="hover-lightout text-white px-2 py-2 border-0 rounded-3 aligh-middle" type="submit"
+                      style="background-color: #cd4c54;width: 73.5px;height: 37.5px;">Submit</button>
+                  </div>
+                </div>
+              </form>
+
+            </div>
+            <div class="modal-footer py-1" style="padding-right: 14px;">
+              <div class="py-2">
+                <button type="button" class="hover-color text-white mr-0 border-0 rounded-3" data-dismiss="modal" id="modal-close-btn"
+                  style="font-size:14.5px;height: 37.5px; padding-left:10px;padding-right: 10px;">Close</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

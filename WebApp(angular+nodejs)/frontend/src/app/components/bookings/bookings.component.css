@@ -1,0 +1,57 @@
+.clear-both{
+    clear: both;
+}
+
+.table-wo-bottom{
+    width: 100%;
+    display: table;
+}
+
+#br-container{
+    width: 845px;
+    margin-top: 108px;
+}
+
+.fs-16{
+    font-size: 16px
+}
+.h-tb{
+    height: 41px;
+}
+
+.th-b{
+    vertical-align: middle;
+    padding-bottom: 0px;
+}
+
+@media (max-width: 576px) {
+    #bt-h1{
+        width: 6%!important;
+    }
+    #bt-h2{
+        width: 24%!important;
+    }
+    #bt-h3{
+        width: 13%!important;
+    }
+    #bt-h4{
+        width: 17%!important;
+    }
+    #bt-h5{
+        width: 31%!important;
+    }
+
+    .h-tb{
+        height:65px ;
+    }
+
+    #b-table{
+        width: 420px;
+    }
+
+    .th-b{
+        vertical-align: bottom;
+        padding-bottom: 10px;
+    }
+
+}
